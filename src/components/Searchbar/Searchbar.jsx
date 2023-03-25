@@ -1,25 +1,56 @@
-import propTypes from 'prop-types';
-import css from './Searchbar.module.css';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+import { FaSearch } from 'react-icons/fa';
 
-export const Searchbar = ({ onSubmit }) => (
-  <header className={css.Searchbar}>
-    <form className={css.SearchForm} onSubmit={onSubmit}>
-      <button type="submit" className={css.SearchFormButton}>
-        <span className={css.SearchFormButtonLabel}>Search</span>
-      </button>
+import s from './Searchbar.module.css';
 
-      <input
-        name="inputForSearch"
-        className={css.SearchFormInput}
-        type="text"
-        autoComplete="off"
-        autoFocus
-        placeholder="Search images and photos"
-      />
-    </form>
-  </header>
-);
+export class Searchbar extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
 
-Searchbar.propTypes = {
-  onSubmit: propTypes.func,
-};
+  state = {
+    query: '',
+  };
+
+  handleQueryChange = e => {
+    this.setState({ query: e.currentTarget.value.toLowerCase() });
+  };
+
+  handleSubmit = e => {
+    const { query } = this.state;
+    const { onSubmit } = this.props;
+    e.preventDefault();
+    if (!query.trim()) {
+      toast.error('Please, enter search query.');
+      return;
+    }
+    onSubmit(query);
+    this.setState({ query: '' });
+  };
+
+  render() {
+    const { query } = this.state;
+    return (
+      <>
+        <header className={s.searchbar}>
+          <form className={s.searchForm} onSubmit={this.handleSubmit}>
+            <button type="submit" className={s.searchFormBtn}>
+              <FaSearch />
+            </button>
+            <input
+              className={s.searchFormInput}
+              type="text"
+              value={query}
+              autoComplete="off"
+              autoFocus
+              placeholder="Search images and photos"
+              onChange={this.handleQueryChange}
+            />
+          </form>
+        </header>
+      </>
+    );
+  }
+}

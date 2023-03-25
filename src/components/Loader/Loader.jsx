@@ -1,16 +1,19 @@
-import { Bars } from 'react-loader-spinner';
-import css from './Loader.module.css';
+import { Puff } from 'react-loader-spinner';
+import s from './Loader.module.css';
 
-export const Loader = () => (
-  <div className={css.Loader}>
-  <Bars
+export const Loader = () => {
+  return (
+    <div className={s.loaderWrapper}>
+      <Puff
   height="80"
   width="80"
-  color="blue"
-  ariaLabel="bars-loading"
+  radius={1}
+  color="#4fa94d"
+  ariaLabel="puff-loading"
   wrapperStyle={{}}
   wrapperClass=""
   visible={true}
-    />
-  </div>
-);
+/>
+    </div>
+  );
+};
